@@ -1,88 +1,185 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aryan Singh | Portfolio</title>
+    <title>Aryan Singh | Portfolio Pro</title>
+    <meta name="description" content="Aryan Singh portfolio with interactive project cards, filters, and modern Tailwind UI." />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sora: ['Sora', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace']
+            },
+            colors: {
+              ink: '#071320',
+              dusk: '#0d1f33',
+              mint: '#50f2c8',
+              amberx: '#ff9a45'
+            },
+            boxShadow: {
+              glow: '0 14px 34px rgba(80, 242, 200, 0.28)',
+              warm: '0 14px 34px rgba(255, 154, 69, 0.26)'
+            },
+            keyframes: {
+              floaty: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-8px)' }
+              }
+            },
+            animation: {
+              floaty: 'floaty 6s ease-in-out infinite'
+            }
+          }
+        }
+      };
+    </script>
+
+    <style>
+      body {
+        font-family: 'Sora', sans-serif;
+        background:
+          radial-gradient(circle at 8% 15%, rgba(80, 242, 200, 0.12), transparent 30%),
+          radial-gradient(circle at 92% 14%, rgba(255, 154, 69, 0.18), transparent 28%),
+          linear-gradient(155deg, #050c16 0%, #071320 42%, #0d1f33 100%);
+      }
+
+      .glass {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(12px);
+      }
+
+      .card-enter {
+        animation: cardIn 380ms ease both;
+      }
+
+      @keyframes cardIn {
+        from {
+          opacity: 0;
+          transform: translateY(14px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+    </style>
   </head>
-  <body>
-    <div class="noise"></div>
-    <header class="site-header">
-      <nav class="nav container">
-        <a class="logo" href="#home">AS</a>
-        <div class="nav-links">
-          <a href="#projects">Projects</a>
-          <a href="#skills">Skills</a>
-          <a href="#contact">Contact</a>
+
+  <body class="text-slate-100 selection:bg-mint/30 selection:text-white">
+    <div class="fixed inset-0 pointer-events-none opacity-[0.08]" style="background-image: radial-gradient(#ffffff 0.55px, transparent 0.55px); background-size: 4px 4px;"></div>
+
+    <header class="sticky top-0 z-40 border-b border-white/10 bg-ink/70 backdrop-blur-xl">
+      <nav class="mx-auto flex w-[92vw] max-w-6xl items-center justify-between py-4">
+        <a href="#home" class="rounded-full border border-amberx/60 px-3 py-1 font-mono text-sm font-semibold tracking-wider text-amberx">AS</a>
+        <div class="hidden gap-6 text-sm md:flex">
+          <a href="#projects" class="text-slate-200/90 hover:text-white">Projects</a>
+          <a href="#skills" class="text-slate-200/90 hover:text-white">Skills</a>
+          <a href="#contact" class="text-slate-200/90 hover:text-white">Contact</a>
         </div>
       </nav>
     </header>
 
-    <main id="home">
-      <section class="hero container reveal">
-        <p class="kicker">ARYAN SINGH</p>
-        <h1>Building practical products with clean code and bold interfaces.</h1>
-        <p class="lead">Computer Science student focused on full-stack web development, DSA, and AI/ML projects. I turn ideas into responsive, usable products.</p>
-        <div class="cta-row">
-          <a class="btn primary" href="https://github.com/Aryan-singh19" target="_blank" rel="noreferrer">View GitHub</a>
-          <a class="btn ghost" href="#projects">Explore Projects</a>
+    <main id="home" class="mx-auto w-[92vw] max-w-6xl pb-16 pt-10 md:pt-16">
+      <section class="grid items-center gap-10 md:grid-cols-[1.1fr_0.9fr]">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-[0.22em] text-mint">Aryan Singh</p>
+          <h1 class="mt-4 max-w-[15ch] text-4xl font-extrabold leading-tight text-white md:text-6xl">Beautiful interfaces. Practical engineering. Consistent shipping.</h1>
+          <p class="mt-5 max-w-2xl text-slate-300/95">I build modern web products with strong UI, useful interaction, and clean architecture. This portfolio now includes dynamic search, filters, and quick project previews.</p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="https://github.com/Aryan-singh19" target="_blank" rel="noreferrer" class="rounded-xl bg-gradient-to-r from-amberx to-orange-300 px-5 py-3 text-sm font-bold text-slate-950 shadow-warm transition hover:-translate-y-0.5">View GitHub</a>
+            <a href="#projects" class="rounded-xl border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:border-mint/60 hover:bg-mint/10">Explore Projects</a>
+          </div>
+        </div>
+
+        <div class="glass animate-floaty rounded-3xl p-5 md:p-6">
+          <h2 class="text-lg font-bold">Quick Snapshot</h2>
+          <div class="mt-4 grid grid-cols-3 gap-3 text-center">
+            <div class="rounded-xl bg-white/5 p-3">
+              <p id="repoCount" class="text-2xl font-extrabold text-mint">0</p>
+              <p class="mt-1 text-xs text-slate-300">Projects</p>
+            </div>
+            <div class="rounded-xl bg-white/5 p-3">
+              <p id="skillCount" class="text-2xl font-extrabold text-amberx">0</p>
+              <p class="mt-1 text-xs text-slate-300">Skills</p>
+            </div>
+            <div class="rounded-xl bg-white/5 p-3">
+              <p class="text-2xl font-extrabold text-cyan-300">2026</p>
+              <p class="mt-1 text-xs text-slate-300">Focus Year</p>
+            </div>
+          </div>
+          <p class="mt-4 text-sm text-slate-300">Open any card for details, stack tags, and direct links. Filter by category and sort by stars/activity.</p>
         </div>
       </section>
 
-      <section id="projects" class="container section reveal">
-        <div class="section-head">
-          <h2>Featured Work</h2>
-          <p>Selected projects from my GitHub profile.</p>
+      <section id="projects" class="mt-14 rounded-3xl border border-white/10 bg-white/[0.04] p-5 md:p-7">
+        <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 class="text-2xl font-bold md:text-3xl">Interactive Project Cards</h2>
+            <p class="mt-1 text-slate-300">Search, filter, sort, and quickly inspect project highlights.</p>
+          </div>
+
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <input id="searchInput" type="text" placeholder="Search project or tech..." class="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-400 focus:border-mint focus:outline-none sm:w-64" />
+            <select id="sortSelect" class="rounded-xl border border-white/15 bg-ink px-3 py-2.5 text-sm text-white focus:border-mint focus:outline-none">
+              <option value="featured">Sort: Featured</option>
+              <option value="stars">Sort: Stars</option>
+              <option value="updated">Sort: Updated</option>
+            </select>
+          </div>
         </div>
-        <div class="grid cards">
-          <article class="card">
-            <h3>ecommerce-template</h3>
-            <p>Modern e-commerce template with scalable structure and production-style setup.</p>
-            <a href="https://github.com/Aryan-singh19/ecommerce-template" target="_blank" rel="noreferrer">Open Repo</a>
-          </article>
-          <article class="card">
-            <h3>AI-ML</h3>
-            <p>Hands-on machine learning learning repo with experiments and iterative improvements.</p>
-            <a href="https://github.com/Aryan-singh19/AI-ML" target="_blank" rel="noreferrer">Open Repo</a>
-          </article>
-          <article class="card">
-            <h3>DSA</h3>
-            <p>Structured data structures and algorithms practice for interviews and strong fundamentals.</p>
-            <a href="https://github.com/Aryan-singh19/DSA" target="_blank" rel="noreferrer">Open Repo</a>
-          </article>
-        </div>
+
+        <div id="tagFilters" class="mt-5 flex flex-wrap gap-2"></div>
+        <div id="projectsGrid" class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3"></div>
       </section>
 
-      <section id="skills" class="container section reveal">
-        <div class="section-head">
-          <h2>Skills</h2>
-          <p>Core tools I use to design, build, and ship.</p>
-        </div>
-        <div class="skills-wrap">
-          <span>C</span><span>C++</span><span>JavaScript</span><span>TypeScript</span><span>Node.js</span><span>Express</span><span>React</span><span>MongoDB</span><span>MySQL</span><span>Git</span><span>Linux</span><span>HTML/CSS</span>
-        </div>
+      <section id="skills" class="mt-14">
+        <h2 class="text-2xl font-bold md:text-3xl">Skills</h2>
+        <p class="mt-1 text-slate-300">Core technologies I actively use in projects.</p>
+        <div id="skillsWrap" class="mt-5 flex flex-wrap gap-2.5"></div>
       </section>
 
-      <section id="contact" class="container section reveal">
-        <div class="section-head">
-          <h2>Let's Connect</h2>
-          <p>Open to collaborations, projects, and learning opportunities.</p>
-        </div>
-        <div class="contact-box">
-          <a href="https://github.com/Aryan-singh19" target="_blank" rel="noreferrer">GitHub</a>
-          <a href="#" aria-disabled="true">LinkedIn (add your link)</a>
-          <a href="#" aria-disabled="true">Portfolio domain (add later)</a>
+      <section id="contact" class="mt-14 rounded-3xl border border-white/10 bg-gradient-to-r from-mint/10 via-cyan-300/10 to-amberx/10 p-6">
+        <h2 class="text-2xl font-bold md:text-3xl">Let us build something strong</h2>
+        <p class="mt-1 text-slate-200">Open to collaborations, internships, and product-focused teams.</p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="https://github.com/Aryan-singh19" target="_blank" rel="noreferrer" class="rounded-xl border border-white/20 bg-black/20 px-4 py-2 text-sm font-semibold hover:border-mint">GitHub</a>
+          <a href="#" class="rounded-xl border border-white/20 bg-black/20 px-4 py-2 text-sm font-semibold text-slate-300">LinkedIn (add link)</a>
+          <a href="#" class="rounded-xl border border-white/20 bg-black/20 px-4 py-2 text-sm font-semibold text-slate-300">Email (add link)</a>
         </div>
       </section>
     </main>
 
-    <footer class="container footer reveal">
-      <p>© <span id="year"></span> Aryan Singh. Built with intent.</p>
+    <footer class="mx-auto w-[92vw] max-w-6xl border-t border-white/10 py-8 text-center text-sm text-slate-400">
+      <p>© <span id="year"></span> Aryan Singh. Crafted with Tailwind + vanilla JS.</p>
     </footer>
+
+    <div id="projectModal" class="fixed inset-0 z-50 hidden items-end bg-black/60 p-3 backdrop-blur-sm md:items-center md:justify-center">
+      <div class="glass w-full max-w-xl rounded-2xl p-5">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p id="modalTag" class="font-mono text-xs uppercase tracking-widest text-mint"></p>
+            <h3 id="modalTitle" class="mt-1 text-2xl font-bold"></h3>
+          </div>
+          <button id="closeModal" class="rounded-lg border border-white/20 px-2.5 py-1 text-sm hover:border-mint">Close</button>
+        </div>
+        <p id="modalDesc" class="mt-4 text-slate-200"></p>
+        <div id="modalTech" class="mt-4 flex flex-wrap gap-2"></div>
+        <div class="mt-5 flex flex-wrap gap-2">
+          <a id="modalRepo" href="#" target="_blank" rel="noreferrer" class="rounded-xl bg-mint px-4 py-2 text-sm font-bold text-slate-950">Open Repo</a>
+          <button id="copyRepo" class="rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold hover:border-amberx">Copy Link</button>
+        </div>
+      </div>
+    </div>
 
     <script src="script.js"></script>
   </body>
