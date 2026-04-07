@@ -3,7 +3,7 @@ const skills = [
   'Express', 'MongoDB', 'MySQL', 'Git', 'Linux', 'HTML', 'CSS'
 ];
 
-const projects = [
+const curatedProjects = [
   {
     name: 'ecommerce-template',
     summary: 'Modern e-commerce starter with scalable architecture and deploy-ready structure.',
@@ -51,6 +51,8 @@ const projects = [
   }
 ];
 
+let projects = [...curatedProjects];
+
 const state = {
   activeTag: 'All',
   search: '',
@@ -66,6 +68,7 @@ const el = {
   sortSelect: document.getElementById('sortSelect'),
   repoCount: document.getElementById('repoCount'),
   skillCount: document.getElementById('skillCount'),
+  apiStatus: document.getElementById('apiStatus'),
   year: document.getElementById('year'),
   modal: document.getElementById('projectModal'),
   modalTag: document.getElementById('modalTag'),
@@ -165,6 +168,69 @@ function updateStats() {
   el.skillCount.textContent = skills.length;
 }
 
+function inferCategory(repoName, language) {
+  const name = repoName.toLowerCase();
+  if (name.includes('ai') || name.includes('ml')) return 'AI/ML';
+  if (name.includes('dsa') || name.includes('algo')) return 'Problem Solving';
+  if (name.includes('class') || name.includes('student')) return 'Academic';
+  if (language === 'HTML' || language === 'JavaScript' || language === 'TypeScript') return 'Web';
+  return 'Project';
+}
+
+function formatDateISO(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toISOString().slice(0, 10);
+}
+
+async function loadLiveRepoData() {
+  try {
+    const res = await fetch('https://api.github.com/users/Aryan-singh19/repos?per_page=100&sort=updated');
+    if (!res.ok) throw new Error(`GitHub API returned ${res.status}`);
+    const repos = await res.json();
+
+    const merged = curatedProjects.map((project) => {
+      const match = repos.find((r) => r.name.toLowerCase() === project.name.toLowerCase());
+      if (!match) return project;
+      return {
+        ...project,
+        summary: match.description || project.summary,
+        stars: typeof match.stargazers_count === 'number' ? match.stargazers_count : project.stars,
+        updatedAt: formatDateISO(match.updated_at) || project.updatedAt,
+        repo: match.html_url || project.repo,
+        category: project.category || inferCategory(match.name, match.language),
+        tech: project.tech?.length
+          ? project.tech
+          : [match.language, ...(match.topics || [])].filter(Boolean).slice(0, 4)
+      };
+    });
+
+    const curatedNames = new Set(curatedProjects.map((p) => p.name.toLowerCase()));
+    const extra = repos
+      .filter((r) => !r.fork && !curatedNames.has(r.name.toLowerCase()))
+      .slice(0, 6)
+      .map((r) => ({
+        name: r.name,
+        summary: r.description || 'Repository from my GitHub profile.',
+        category: inferCategory(r.name, r.language),
+        stars: r.stargazers_count || 0,
+        updatedAt: formatDateISO(r.updated_at),
+        tech: [r.language, ...(r.topics || [])].filter(Boolean).slice(0, 4),
+        repo: r.html_url
+      }));
+
+    projects = [...merged, ...extra];
+
+    if (el.apiStatus) {
+      el.apiStatus.textContent = `Live synced from GitHub API (${projects.length} repos shown).`;
+    }
+  } catch (error) {
+    if (el.apiStatus) {
+      el.apiStatus.textContent = 'Using local project data (GitHub API unavailable right now).';
+    }
+  }
+}
+
 function openModalByName(projectName) {
   const project = projects.find((p) => p.name === projectName);
   if (!project) return;
@@ -240,8 +306,9 @@ function bindEvents() {
   });
 }
 
-function init() {
+async function init() {
   el.year.textContent = new Date().getFullYear();
+  await loadLiveRepoData();
   renderTags();
   renderProjects();
   renderSkills();
