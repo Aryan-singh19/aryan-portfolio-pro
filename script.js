@@ -188,9 +188,12 @@ async function loadLiveRepoData() {
     const res = await fetch('https://api.github.com/users/Aryan-singh19/repos?per_page=100&sort=updated');
     if (!res.ok) throw new Error(`GitHub API returned ${res.status}`);
     const repos = await res.json();
+    const filteredRepos = repos.filter(
+      (r) => r.name.toLowerCase() !== 'aryan-singh19'
+    );
 
     const merged = curatedProjects.map((project) => {
-      const match = repos.find((r) => r.name.toLowerCase() === project.name.toLowerCase());
+      const match = filteredRepos.find((r) => r.name.toLowerCase() === project.name.toLowerCase());
       if (!match) return project;
       return {
         ...project,
@@ -206,7 +209,7 @@ async function loadLiveRepoData() {
     });
 
     const curatedNames = new Set(curatedProjects.map((p) => p.name.toLowerCase()));
-    const extra = repos
+    const extra = filteredRepos
       .filter((r) => !r.fork && !curatedNames.has(r.name.toLowerCase()))
       .slice(0, 6)
       .map((r) => ({
@@ -222,7 +225,7 @@ async function loadLiveRepoData() {
     projects = [...merged, ...extra];
 
     if (el.apiStatus) {
-      el.apiStatus.textContent = `Live synced from GitHub API (${projects.length} repos shown).`;
+      el.apiStatus.textContent = `Live synced from GitHub API (${projects.length} repos shown, profile README excluded).`;
     }
   } catch (error) {
     if (el.apiStatus) {
