@@ -4,7 +4,7 @@ Premium one-page portfolio website for Aryan Singh.
 
 ## Live Demo
 
-`https://aryan-singh19.github.io/aryan-portfolio-pro/`
+Portfolio (https://aryan-singh19.github.io/aryan-portfolio-pro/)
 
 ## Run Locally
 
